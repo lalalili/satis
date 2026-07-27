@@ -1,0 +1,127 @@
+{
+    "name": "lalalili/packages",
+    "homepage": "https://lalalili.github.io/satis",
+    "description": "lalalili 套件的 Composer 索引。宿主只需要一個 repositories 條目,不必為每個套件各自宣告 vcs。",
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/lalalili/audience-core.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/lalalili/campaign-kit.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/lalalili/campaign-kit-filament.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/lalalili/commerce-core.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/lalalili/commerce-kit.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/lalalili/commerce-payment.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/lalalili/course-commerce.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/lalalili/course-core.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/lalalili/course-filament.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/lalalili/discount.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/lalalili/email-campaign.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/lalalili/email-campaign-filament.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/lalalili/filament-comments.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/lalalili/filament-excel-import.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/lalalili/filament-product-binding.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/lalalili/filament-rating.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/lalalili/filament-upload-center.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/lalalili/laravelshoppingcart.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/lalalili/marketing-automation.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/lalalili/media-manager.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/lalalili/package-testing-support.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/lalalili/report-queue.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/lalalili/subscription-core.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/lalalili/subscription-filament.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/lalalili/survey-core.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/lalalili/survey-filament.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/lalalili/text-to-speech.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/lalalili/video-upload.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/cptw-and-yunwu/epub-reader.git"
+        }
+    ],
+    "require-all": true,
+    "require-dependencies": false,
+    "require-dev-dependencies": false,
+    "output-html": true
+}

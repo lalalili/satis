@@ -1,0 +1,68 @@
+name: Build & Deploy Satis
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'satis.json'
+      - '.github/workflows/build.yml'
+  # 套件發新 tag 後索引不會自動更新,靠排程補上。
+  # 需要立刻生效時用 workflow_dispatch 手動觸發。
+  schedule:
+    - cron: '17 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# 排程與手動觸發可能重疊,同時只跑一個
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          coverage: none
+
+      - name: Install Satis
+        run: |
+          composer create-project composer/satis /tmp/satis \
+            --stability=dev --no-interaction --no-progress
+
+      # 所有套件都是公開 repo,GITHUB_TOKEN 只是用來提高 API rate limit
+      - name: Build index
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          COMPOSER_PROCESS_TIMEOUT: '0'
+        run: |
+          composer config --global --auth github-oauth.github.com "$GITHUB_TOKEN"
+          php /tmp/satis/bin/satis build satis.json public --skip-errors
+
+      - name: Show index size
+        run: du -sh public && ls public
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

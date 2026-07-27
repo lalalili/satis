@@ -43,9 +43,14 @@
 
 ## 已收錄
 
-24 個 `lalalili/*` 套件，加上 `cptw-and-yunwu/epub-reader`，以及三個
-沿用上游套件名的 fork：`eightynine/filament-excel-import`、
-`mokhosh/filament-rating`、`parallax/filament-comments`。
+24 個 `lalalili/*` 套件，以及三個沿用上游套件名的 fork：
+`eightynine/filament-excel-import`、`mokhosh/filament-rating`、
+`parallax/filament-comments`。
+
+**不含 `cptw-and-yunwu/epub-reader`** —— 它是另一個 organization 底下的
+私有 repo，本 repo 的 `GITHUB_TOKEN` 無權讀取。要把它納入就得額外維護
+一組跨 org 的 PAT，划不來。需要它的宿主（cptw、aitehub）各自保留一個
+`vcs` 條目即可。
 
 套件用途見 [PACKAGES.md](https://github.com/lalalili/.github/blob/main/PACKAGES.md)，
 版本契約見 [SEMVER.md](https://github.com/lalalili/.github/blob/main/SEMVER.md)。

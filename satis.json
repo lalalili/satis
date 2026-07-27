@@ -114,10 +114,6 @@
         {
             "type": "vcs",
             "url": "https://github.com/lalalili/video-upload.git"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/cptw-and-yunwu/epub-reader.git"
         }
     ],
     "require-all": true,

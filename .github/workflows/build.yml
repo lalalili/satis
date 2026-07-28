@@ -39,14 +39,46 @@ jobs:
           composer create-project composer/satis /tmp/satis \
             --stability=dev --no-interaction --no-progress
 
-      # 所有套件都是公開 repo,GITHUB_TOKEN 只是用來提高 API rate limit
+      # marketing-automation 是私有 repo，必須使用只讀 fine-grained PAT。
       - name: Build index
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SATIS_GITHUB_TOKEN: ${{ secrets.SATIS_GITHUB_TOKEN }}
           COMPOSER_PROCESS_TIMEOUT: '0'
         run: |
-          composer config --global --auth github-oauth.github.com "$GITHUB_TOKEN"
-          php /tmp/satis/bin/satis build satis.json public --skip-errors
+          test -n "$SATIS_GITHUB_TOKEN" || {
+            echo "ERROR: SATIS_GITHUB_TOKEN is required"
+            exit 1
+          }
+          composer config --global --auth github-oauth.github.com "$SATIS_GITHUB_TOKEN"
+          php /tmp/satis/bin/satis build satis.json public
+
+      - name: Verify required package metadata
+        run: |
+          php -r '
+          $requirements = [
+              "lalalili/marketing-automation" => "v3.0.1",
+              "lalalili/report-queue" => "v1.0.1",
+              "lalalili/survey-core" => "v1.1.1",
+              "lalalili/survey-filament" => "v1.1.1",
+          ];
+
+          foreach ($requirements as $package => $version) {
+              $path = "public/p2/{$package}.json";
+
+              if (! is_file($path)) {
+                  fwrite(STDERR, "ERROR: missing {$path}\n");
+                  exit(1);
+              }
+
+              $metadata = json_decode(file_get_contents($path), true, flags: JSON_THROW_ON_ERROR);
+              $versions = array_column($metadata["packages"][$package] ?? [], "version");
+
+              if (! in_array($version, $versions, true)) {
+                  fwrite(STDERR, "ERROR: {$package} {$version} is missing\n");
+                  exit(1);
+              }
+          }
+          '
 
       - name: Show index size
         run: du -sh public && ls public

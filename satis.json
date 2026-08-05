@@ -53,6 +53,10 @@
         },
         {
             "type": "vcs",
+            "url": "https://github.com/lalalili/error-pages.git"
+        },
+        {
+            "type": "vcs",
             "url": "https://github.com/lalalili/filament-comments.git"
         },
         {

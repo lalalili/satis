@@ -81,10 +81,6 @@
         },
         {
             "type": "vcs",
-            "url": "https://github.com/lalalili/marketing-automation.git"
-        },
-        {
-            "type": "vcs",
             "url": "https://github.com/lalalili/media-manager.git"
         },
         {

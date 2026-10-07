@@ -78,24 +78,35 @@ jobs:
           composer create-project composer/satis /tmp/satis \
             --stability=dev --no-interaction --no-progress
 
-      # marketing-automation 是私有 repo，必須使用只讀 fine-grained PAT。
+      # 索引只收公開 repo，內建 GITHUB_TOKEN 即可（主要用途是 API 額度：
+      # 未驗證只有 60 次/小時）。私有 repo 不可放進這個公開 Pages 索引，
+      # 否則各版本的 composer.json 會公開；宿主自行用 vcs 條目消費。
       - name: Build index
         env:
-          SATIS_GITHUB_TOKEN: ${{ secrets.SATIS_GITHUB_TOKEN }}
+          GITHUB_API_TOKEN: ${{ github.token }}
           COMPOSER_PROCESS_TIMEOUT: '0'
         run: |
-          test -n "$SATIS_GITHUB_TOKEN" || {
-            echo "ERROR: SATIS_GITHUB_TOKEN is required"
-            exit 1
-          }
-          composer config --global --auth github-oauth.github.com "$SATIS_GITHUB_TOKEN"
+          composer config --global --auth github-oauth.github.com "$GITHUB_API_TOKEN"
           php /tmp/satis/bin/satis build satis.json public
+
+      - name: Show GitHub API usage
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api rate_limit -q '.resources.core | "core used \(.used) / limit \(.limit)"'
+
+      - name: Ensure private packages are not published
+        run: |
+          if [ -e public/p2/lalalili/marketing-automation.json ]; then
+            echo "ERROR: lalalili/marketing-automation 是私有套件，不可出現在公開索引"
+            exit 1
+          fi
 
       - name: Verify required package metadata
         run: |
           php -r '
           $requirements = [
-              "lalalili/marketing-automation" => "v3.0.1",
               "lalalili/report-queue" => "v1.0.1",
               "lalalili/survey-core" => "v1.1.1",
               "lalalili/survey-filament" => "v1.1.1",

@@ -177,3 +177,16 @@ jobs:
     steps:
       - id: deployment
         uses: actions/deploy-pages@v4
+
+  # public repo 60 天無活動會被 GitHub 停用整個 workflow（含 dispatch）。
+  # 排程執行時對自己重新 enable，可重置計時；與建置分開，建置失敗也照做。
+  keepalive:
+    if: github.event_name == 'schedule'
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+    steps:
+      - name: Reset inactivity timer
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow enable build.yml --repo "$GITHUB_REPOSITORY"

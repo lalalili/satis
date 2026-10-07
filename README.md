@@ -27,13 +27,14 @@
 
 ## 索引怎麼更新
 
-- 每小時排程重建一次（`cron: 17 * * * *`）
+- 每小時排程重建一次（`cron: 17 * * * *`）；排程執行時 `keepalive` job 會對自己重新 enable，
+  避免 public repo 60 天無活動被 GitHub 停用整個 workflow（2026-10-04 發生過一次）
 - 改 `satis.json` 推上 main 會立刻重建
 - 套件剛發 tag、需要馬上生效時，到 Actions 頁面手動觸發
   **Build & Deploy Satis**（`workflow_dispatch`）
 
-> 索引**不託管 dist 壓縮檔**。所有套件都是公開 repo，Composer 直接向
-> GitHub API 抓 zipball。開啟 Satis 的 `archive` 會讓索引從 2.4 MB
+> 索引**不託管 dist 壓縮檔**。Composer 直接向
+> GitHub API 抓 zipball（私有的 `lalalili/marketing-automation` 需要宿主自備 GitHub token）。開啟 Satis 的 `archive` 會讓索引從 2.4 MB
 > 膨脹到 845 MB（commerce-core 光 tag 就有 97 個），對 GitHub Pages
 > 不切實際。
 

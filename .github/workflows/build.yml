@@ -18,10 +18,11 @@ permissions:
   pages: write
   id-token: write
 
-# 排程與手動觸發可能重疊,同時只跑一個
+# 排程、手動與發版 dispatch 可能重疊,同時只跑一個;排隊而非取消,
+# 否則被取消的 dispatch 建置會少掉「驗證剛發的版本」那道檢查
 concurrency:
   group: pages
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   build:
